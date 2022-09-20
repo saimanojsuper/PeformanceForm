@@ -2,6 +2,8 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "peformance-form-api": "apps/peformance-form-api"
+    "peformance-form-api": "apps/peformance-form-api",
+    "performance-form": "apps/performance-form",
+    "performance-form-e2e": "apps/performance-form-e2e"
   }
 }
