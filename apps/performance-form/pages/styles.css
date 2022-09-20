@@ -1,5 +1,25 @@
 .field{
-  width: 200px !important;
+    width: 30% !important;
     padding: 1% !important;
     margin: 1% !important;
+}
+.button-wrap{
+  display: flex;
+  justify-content: space-around;
+  background: blanchedalmond;
+}
+
+.MuiTableHead-root {
+  background: antiquewhite;
+}
+
+.MuiTableContainer-root {
+  width: 50% !important;
+  margin: 0 10% 2% 10%;
+}
+.heading{
+  margin: 1% 0% 1% 20%;
+}
+.peformance-data{
+  display: flex;
 }

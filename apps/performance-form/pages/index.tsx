@@ -1,72 +1,72 @@
 import styles from './index.module.css';
 import {
-  Typography,
   Paper,
-  Link,
-  Grid,
   Button,
-  CssBaseline,
-  MenuItem,
-  TextField
+  TextField,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Table,
+  TableBody,
+  Typography
 } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export function Index() {
+export function Index({ json }) {
   /*
    * Replace the elements below with your own.
    *
    * Note: The corresponding styles are in the ./index.css file.
    */
 
-  const [data, setData] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const [justification, setJustification] = useState('');
+  const data = json[0];
+  //const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(data['justification'] ? true : false);
+  const [justification, setJustification] = useState(data['justification']);
 
   const router = useRouter()
   const { id } = router.query
 
-  console.log(id, data);
+  console.log(id, json);
 
 
 
-  const handleReset = () => {
+  const handleEdit = () => {
     setDisabled(prev => !prev);
   }
 
-  useEffect(() => {
-    console.log('chekcing');
-    const fetchData = async () => {
-      const performanceData = await fetch(`http://localhost:3333/performanceForm?id=${id}`, {
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-      const json = await performanceData.json();
-      setData(json[0]);
-      setJustification(json[0]['justification']);
-      setLoading(false);
-      if (json[0] && json[0]['justification']) {
-        setDisabled(true);
-      }
-    }
-    if (id) fetchData();
-  }, [id])
+  // useEffect(() => {
+  //   console.log('chekcing');
+  //   const fetchData = async () => {
+  //     const performanceData = await fetch(`http://localhost:3333/performanceForm?id=${id}`, {
+  //       mode: 'cors',
+  //       headers: {
+  //         'Access-Control-Allow-Origin': '*'
+  //       }
+  //     });
+  //     const json = await performanceData.json();
+  //     setData(json[0]);
+  //     setJustification(json[0]['justification']);
+  //     setLoading(false);
+  //     if (json[0] && json[0]['justification']) {
+  //       setDisabled(true);
+  //     }
+  //   }
+  //   if (id) fetchData();
+  // }, [id])
 
-  const handleSubmit = () => {
-    const updateTheReport = async () => {
-      const performanceData = await fetch(`http://localhost:3333/updateTheReport?id=${id}&justification=${justification}`, {
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-    }
-    updateTheReport();
-    handleReset();
-    console.log('submitted')
+  const handleSubmit = async () => {
+
+    const performanceData = await fetch(`http://localhost:3333/updateTheReport?id=${id}&justification=${justification}`, {
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+    handleEdit();
+    alert('justification has been changed succesfully click on edit justification to modify it')
   }
 
   const handleChange = (e) => {
@@ -75,73 +75,103 @@ export function Index() {
   }
 
   return (
-    !loading && (
-      <div className={styles.page} >
-        <Paper>
-          <h2>Form Demo</h2>
+    <div className={styles.page} >
+      <Paper>
+        <header className='heading'>
+        <Typography variant="h4" gutterBottom >
+          Peformance Form 
+        </Typography>
+        </header>
 
-          <TextField
-            //readOnly= {true}
-            disabled
-            className='field'
-            value={data['email']}
-            label={"email"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['week_number']}
-            label={"Week_Number"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['year']}
-            label={"Year"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['asset_name']}
-            label={"Asset_Name"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['current_week_footfall']}
-            label={"Current_Week_Footfall"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['same_week_previous_year_footfall']}
-            label={"Same_Week_Previous_Year_Footfall"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['change']}
-            label={"Change"} //optional
-          />
-          <TextField
-            disabled
-            className='field'
-            value={data['thresold_breach']}
-            label={"Thresold_Breach"} //optional
-          />
-          <TextField
-            disabled={disabled}
-            className='field'
-            value={justification}
-            label={"Justification"} //optional
-            onChange={handleChange}
-          />
+       <div className='peformance-data' >
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Field Name</TableCell>
+                <TableCell align="right">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Object.keys(data).map((key) => {
+                //if (key === 'justification') return;
+                if (key === 'thresold_breach') {
+                  return (
+                    <TableRow
+                      key={key}
+                    >
+                      <TableCell component="th" scope="row">
+                        {key}
+                      </TableCell>
+                      <TableCell align="right">{data[key] ? 'true' : 'false'}</TableCell>
 
-          <Button onClick={handleSubmit}>Submit</Button>
-          <Button onClick={handleReset}>Reset</Button>
-        </Paper>
-      </div>)
+                    </TableRow>);
+                }
+                return (
+                  <TableRow
+                    key={key}
+                  >
+                    <TableCell component="th" scope="row">
+                      {key}
+                    </TableCell>
+                    <TableCell align="right">{key === 'justification' ? justification : data[key]}</TableCell>
+
+                  </TableRow>)
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+
+       {
+        !disabled &&(
+        <TextField
+          disabled={disabled}
+          className='field'
+          id="standard-multiline-flexible"
+          label={"Justification"}
+          multiline
+          rows={5}
+          maxRows={15}
+          value={justification}
+          onChange={handleChange}
+          variant="standard"
+        />)
+       }
+        </div>
+
+        <div className='button-wrap'>
+          {!disabled ? (<Button className='button' onClick={handleSubmit}>Submit</Button>) :
+            (<Button className='button' onClick={handleEdit}>Edit the Justification</Button>)
+          }
+        </div>
+      </Paper>
+    </div>
   );
+}
+
+export async function getServerSideProps(context) {
+
+  let json;
+  if (context.query) {
+    const id = context.query.id;
+    const performanceData = await fetch(`http://localhost:3333/performanceForm?id=${id}`, {
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+    json = await performanceData.json();
+  }
+
+  console.log('context', context.query, 'cjel', json);
+
+  return {
+    props: {
+      json
+    }
+  }
+
 }
 
 export default Index;

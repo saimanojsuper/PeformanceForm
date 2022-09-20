@@ -8,9 +8,10 @@
 const pg = require('pg');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require('cors')
+const path = require('path')
 
-require('dotenv').config()
-console.log('check', process.env)
+require('dotenv').config({  path: path.resolve("C:/Users/napmanoj/Desktop/assesment_pycode/performance-form/.env") })
+console.log('check', process.env.USER,path.resolve("C:/Users/napmanoj/Desktop/assesment_pycode/performance-form/.env"))
 const config = {
   host: 'handiar.postgres.database.azure.com',
   // Do not hard code your username and password.
@@ -23,12 +24,12 @@ const config = {
 };
 
 const client = new pg.Client(config);
-console.log('check', client);
+//console.log('check', client);
 
 import * as express from 'express';
 
 const databaseConnection = (queryDatabase) => {
-  console.log('check', client);
+  //console.log('check', client);
   if (client._connected) {
     queryDatabase();
     return;
@@ -62,7 +63,7 @@ app.get('/createPerformanceTable', (req, res) => {
     client
       .query(query)
       .then(() => {
-        res.send("Table created successfully")
+        res.send("Table updated successfully")
       })
       .catch(err => console.log(err))
       .then(() => {
