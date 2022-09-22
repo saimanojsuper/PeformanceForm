@@ -13,12 +13,7 @@ const path = require('path')
 require('dotenv').config({  path: path.resolve("C:/Users/napmanoj/Desktop/assesment_pycode/performance-form/.env") })
 console.log('check', process.env.USER,path.resolve("C:/Users/napmanoj/Desktop/assesment_pycode/performance-form/.env"))
 const config = {
-  host: 'handiar.postgres.database.azure.com',
-  // Do not hard code your username and password.
-  // Consider using Node environment variables.
-  user: 'handiAR@handiar',
-  password: 'hanAR@123',
-  database: 'hackathon',
+  
   port: 5432,
   ssl: true
 };
