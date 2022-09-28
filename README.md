@@ -92,3 +92,15 @@ Nx Cloud pairs with Nx in order to enable you to build and test code more rapidl
 Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
 
 Visit [Nx Cloud](https://nx.app/) to learn more.
+
+
+
+create table
+http://localhost:3333/createPerformanceTable
+
+add a performance report to the table
+http://localhost:3333/generatePeformanceReport
+
+
+get the performance report by id
+http://localhost:3333/performanceForm?id=1
